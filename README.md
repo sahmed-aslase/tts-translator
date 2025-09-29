@@ -1,17 +1,6 @@
 # Multilingual Translator (Laravel)
 
 ## About the Project
-A simple multilingual translator built with Laravel. Enter English text, select one or more of Spanish, French, or German, and view the translated results. The app focuses on simplicity, clean UI, and no external API keys.
-
-### Features
-- English → Spanish (es), French (fr), German (de)
-- Translate to multiple target languages at once
-- History of translations stored in MySQL with pagination
-- Clean Tailwind UI (via CDN)
-- Loading overlay and disabled controls during actions
-# Multilingual Translator (Laravel)
-
-## About the Project
 
 A simple multilingual translator built with Laravel. Enter English text, select one or more of Spanish, French, or German, and view the translated results. The app focuses on simplicity, a clean UI, and no external API keys.
 
