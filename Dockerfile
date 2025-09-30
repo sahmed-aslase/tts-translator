@@ -16,7 +16,7 @@ WORKDIR /var/www/html
 COPY composer.lock composer.json ./
 
 # Install composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.8.8 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Copy the rest of the application
