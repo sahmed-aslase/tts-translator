@@ -1,26 +1,32 @@
-FROM php:8.2-cli
+# Use PHP 8.2 with Apache
+FROM php:8.2-apache
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    unzip git curl libpng-dev libonig-dev libxml2-dev zip nodejs npm \
+    libpng-dev libonig-dev libxml2-dev zip unzip git curl \
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
 
-# Install Composer
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json ./
+
+# Install composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /app
-
-# Copy project files
-COPY . .
-
-# Install backend dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Build frontend (if using Vite or Mix)
-RUN npm install && npm run build
+# Copy the rest of the application
+COPY . .
 
-# Expose Railway's dynamic port
-EXPOSE $PORT
+# Set permissions for storage and cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Run Laravel
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+# Expose port 80
+EXPOSE 80
+
+# Start Apache
+CMD ["apache2-foreground"]
